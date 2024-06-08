@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+
+import AptosProvider from '@/context/AptosProvider';
+
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600'] });
@@ -16,7 +19,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='en'>
-            <body className={inter.className}>{children}</body>
+            <AptosProvider>
+                <body className={inter.className}>{children}</body>
+            </AptosProvider>
         </html>
     );
 }
