@@ -159,7 +159,7 @@ export default function Home() {
                     </button>
                     {requiredField}
                 </div>
-                <button>Continue</button>
+                <button type='button'>Continue</button>
             </form>
         </section>
     );
