@@ -1,12 +1,21 @@
+:root {
+    --passive: #57647e;
+    --error: #dc2626;
+    --active: #2e69ff;
+}
+
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+
+    font-size: 16px;
+    font-size: clamp(6px, 3.5dvw, 15px);
 }
 
 html,
 body {
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
 }
 
@@ -14,9 +23,55 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    background-color: #f3f3fe;
 }
 
 a {
     color: inherit;
     text-decoration: none;
+}
+
+h2 {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+#input {
+    position: relative;
+
+    > input,
+    > select {
+        width: stretch;
+
+        padding: 0.5rem;
+        margin-top: 1.3rem;
+
+        border: 1px solid var(--passive);
+        border-radius: 4px;
+    }
+
+    > input:focus,
+    > select:focus {
+        border: 1px solid var(--active);
+        outline: none;
+    }
+
+    > label {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        font-size: 0.8rem;
+        color: var(--passive);
+    }
+}
+
+span#red {
+    color: var(--error);
 }
