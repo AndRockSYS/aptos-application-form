@@ -2,34 +2,18 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+
 import SignatureCanvas from 'react-signature-canvas';
 import ReactSignatureCanvas from 'react-signature-canvas';
+
+import useInputs from '@/hooks/useInputs';
 
 import './home.css';
 
 export default function Home() {
-    const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>();
+    const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>(null);
 
-    const handleBlueInputs = (sectionName: string) => {
-        const inputs = document.querySelectorAll(
-            `${sectionName} input`
-        ) as NodeListOf<HTMLInputElement>;
-
-        let amount = 0;
-
-        inputs.forEach((input) => {
-            if (input.value == '') amount++;
-
-            input.style.borderColor =
-                input.value != '' || input.name == 'street-address-2'
-                    ? 'var(--passive)'
-                    : 'var(--error)';
-        });
-
-        const error = document.querySelector(`${sectionName} div.error`) as HTMLElement;
-
-        error.style.display = amount > 0 ? 'block' : 'none';
-    };
+    const { handleInputError, handleSignatureError } = useInputs();
 
     const getInput = (
         className: string,
@@ -40,28 +24,12 @@ export default function Home() {
         <div id='input'>
             <label htmlFor={name}>{label}</label>
             <input
-                onBlur={() => handleBlueInputs(`div.${className}`)}
+                onBlur={() => handleInputError(`div.${className}`)}
                 type={type ? type : 'text'}
                 name={name}
             />
         </div>
     );
-
-    const clearSignature = () => {
-        if (sigCanvas != null) sigCanvas.clear();
-
-        const error = document.querySelector(`div.signature div.error`) as HTMLElement;
-        error.style.display = 'block';
-        const canvas = document.querySelector(`div.signature canvas`) as HTMLElement;
-        canvas.style.borderColor = 'var(--error)';
-    };
-
-    const hideCanvasError = () => {
-        const error = document.querySelector(`div.signature div.error`) as HTMLElement;
-        error.style.display = 'none';
-        const canvas = document.querySelector(`div.signature canvas`) as HTMLElement;
-        canvas.style.borderColor = 'var(--passive)';
-    };
 
     const r = <span id='red'>*</span>;
 
@@ -153,8 +121,11 @@ export default function Home() {
                 </div>
                 <div className='signature'>
                     <h2>Authorised Signature on behalf of the company {r}</h2>
-                    <SignatureCanvas onBegin={hideCanvasError} ref={(ref) => setSigCanvas(ref)} />
-                    <button type='button' onClick={clearSignature}>
+                    <SignatureCanvas
+                        onBegin={() => handleSignatureError(sigCanvas, false)}
+                        ref={(ref) => setSigCanvas(ref)}
+                    />
+                    <button type='button' onClick={() => handleSignatureError(sigCanvas, true)}>
                         Clear
                     </button>
                     {requiredField}
