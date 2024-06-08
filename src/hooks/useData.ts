@@ -89,7 +89,7 @@ const useData = () => {
         return CryptoJS.AES.decrypt(data, privateKey).toString(CryptoJS.enc.Utf8);
     };
 
-    return { form, isFulfilled, sendForm, decryptData };
+    return { isFulfilled, sendForm, decryptData };
 };
 
 export default useData;

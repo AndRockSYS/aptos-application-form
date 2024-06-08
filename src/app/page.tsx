@@ -18,7 +18,7 @@ export default function Home() {
     const { account, connect } = useWallet();
 
     const { handleInputError, handleSignatureError } = useInputs();
-    const { form, isFulfilled, sendForm } = useData();
+    const { isFulfilled, sendForm } = useData();
 
     const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>(null);
     const [buttonMessage, setButtonMessage] = useState('Connect Petra Wallet');
