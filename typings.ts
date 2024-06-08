@@ -21,6 +21,7 @@ export interface Address {
 export interface ApplicationForm {
     firstName: string;
     lastName: string;
+    signature: string;
     email: string;
     phone: string;
     company: Company;

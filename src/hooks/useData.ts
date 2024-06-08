@@ -25,7 +25,7 @@ const useData = () => {
         return true;
     };
 
-    const collectData = () => {
+    const collectData = (signatureData: string) => {
         const inputs = document.querySelectorAll(
             'section.application > form input, section.application > form select'
         ) as NodeListOf<HTMLInputElement>;
@@ -48,13 +48,13 @@ const useData = () => {
             phone: inputs[10].value,
             firstName: inputs[11].value,
             lastName: inputs[12].value,
+            signature: signatureData,
         });
-
-        const signature = document.querySelector('canvas');
     };
 
-    const sendForm = () => {
-        collectData();
+    const sendForm = (signatureData: string | undefined) => {
+        if (!signatureData) return;
+        collectData(signatureData);
         hashData().then(async ([data, privateKey]) => {
             const transaction: InputTransactionData = {
                 data: {
@@ -62,7 +62,6 @@ const useData = () => {
                     functionArguments: [data],
                 },
             };
-
             await signAndSubmitTransaction(transaction).catch((error) =>
                 alert(`Error occured - ${error}`)
             );
@@ -85,11 +84,11 @@ const useData = () => {
         return [hashed, privateKey];
     };
 
-    const decryptData = (data: string, privateKey: string): string => {
+    const decodeData = (data: string, privateKey: string): string => {
         return CryptoJS.AES.decrypt(data, privateKey).toString(CryptoJS.enc.Utf8);
     };
 
-    return { isFulfilled, sendForm, decryptData };
+    return { isFulfilled, sendForm };
 };
 
 export default useData;
