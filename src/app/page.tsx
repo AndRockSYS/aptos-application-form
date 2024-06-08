@@ -1,28 +1,93 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
+import SignatureCanvas from 'react-signature-canvas';
+import ReactSignatureCanvas from 'react-signature-canvas';
 
 import './home.css';
 
 export default function Home() {
-    const getInput = (name: string, label: string, type?: string): JSX.Element => (
+    const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>();
+
+    const handleBlueInputs = (sectionName: string) => {
+        const inputs = document.querySelectorAll(
+            `${sectionName} input`
+        ) as NodeListOf<HTMLInputElement>;
+
+        let amount = 0;
+
+        inputs.forEach((input) => {
+            if (input.value == '') amount++;
+
+            input.style.borderColor =
+                input.value != '' || input.name == 'street-address-2'
+                    ? 'var(--passive)'
+                    : 'var(--error)';
+        });
+
+        const error = document.querySelector(`${sectionName} div.error`) as HTMLElement;
+
+        error.style.display = amount > 0 ? 'block' : 'none';
+    };
+
+    const getInput = (
+        className: string,
+        name: string,
+        label: string,
+        type?: string
+    ): JSX.Element => (
         <div id='input'>
             <label htmlFor={name}>{label}</label>
-            <input type={type ? type : 'text'} name={name} />
+            <input
+                onBlur={() => handleBlueInputs(`div.${className}`)}
+                type={type ? type : 'text'}
+                name={name}
+            />
         </div>
     );
 
+    const clearSignature = () => {
+        if (sigCanvas != null) sigCanvas.clear();
+
+        const error = document.querySelector(`div.signature div.error`) as HTMLElement;
+        error.style.display = 'block';
+        const canvas = document.querySelector(`div.signature canvas`) as HTMLElement;
+        canvas.style.borderColor = 'var(--error)';
+    };
+
+    const hideCanvasError = () => {
+        const error = document.querySelector(`div.signature div.error`) as HTMLElement;
+        error.style.display = 'none';
+        const canvas = document.querySelector(`div.signature canvas`) as HTMLElement;
+        canvas.style.borderColor = 'var(--passive)';
+    };
+
     const r = <span id='red'>*</span>;
+
+    const requiredField = (
+        <div className='error'>
+            <Image src={'/warning.png'} alt='warning' width={32} height={32}></Image>
+            <h3>This field is required</h3>
+        </div>
+    );
 
     return (
         <section className='application'>
+            <script
+                async
+                src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'
+            ></script>
+
             <form action='submit'>
                 <Image src={'/logo.png'} alt='logo' width={160} height={40}></Image>
                 <h1>TBP WORLD NEUTRAL SINGLE MARKET SOVEREIGN TRADING COMPANY</h1>
                 <h1>APPLICATION FORM</h1>
                 <div className='company'>
                     <h2>Company Info {r}</h2>
-                    {getInput('company', 'Company Name')}
-                    {getInput('registration-number', 'Company Registration Number')}
-                    {getInput('country', 'Country of Registration')}
+                    {getInput('company', 'company', 'Company Name')}
+                    {getInput('company', 'registration-number', 'Company Registration Number')}
+                    {getInput('company', 'country', 'Country of Registration')}
                     <div id='input'>
                         <label htmlFor='business-type'>Type of Business</label>
                         <select name='business-type'>
@@ -30,19 +95,22 @@ export default function Home() {
                             <option value='Services'>Services</option>
                         </select>
                     </div>
+                    {requiredField}
                 </div>
                 <div className='address'>
                     <h2>Business Address {r}</h2>
-                    {getInput('street-address', 'Street Address')}
-                    {getInput('street-address-2', 'Street Address Line 2')}
-                    {getInput('city', 'City')}
-                    {getInput('state', 'State / Province')}
-                    {getInput('postal-code', 'Postal / Zip Code')}
+                    {getInput('address', 'street-address', 'Street Address')}
+                    {getInput('address', 'street-address-2', 'Street Address Line 2')}
+                    {getInput('address', 'city', 'City')}
+                    {getInput('address', 'state', 'State / Province')}
+                    {getInput('address', 'postal-code', 'Postal / Zip Code')}
+                    {requiredField}
                 </div>
                 <div className='contact'>
                     <h2>Contact Information {r}</h2>
-                    {getInput('email', 'Email', 'email')}
-                    {getInput('phone-number', 'Phone Number', 'tel')}
+                    {getInput('contact', 'email', 'Email', 'email')}
+                    {getInput('contact', 'phone-number', 'Phone Number', 'tel')}
+                    {requiredField}
                 </div>
                 <article>
                     <h2>Agreed Terms</h2>
@@ -79,12 +147,17 @@ export default function Home() {
                 </article>
                 <div className='person'>
                     <h2>Authorised Personnel on behalf of the Company {r}</h2>
-                    {getInput('first-name', 'First Name')}
-                    {getInput('last-name', 'Last Name')}
+                    {getInput('person', 'first-name', 'First Name')}
+                    {getInput('person', 'last-name', 'Last Name')}
+                    {requiredField}
                 </div>
                 <div className='signature'>
                     <h2>Authorised Signature on behalf of the company {r}</h2>
-                    <canvas></canvas>
+                    <SignatureCanvas onBegin={hideCanvasError} ref={(ref) => setSigCanvas(ref)} />
+                    <button type='button' onClick={clearSignature}>
+                        Clear
+                    </button>
+                    {requiredField}
                 </div>
                 <button>Continue</button>
             </form>

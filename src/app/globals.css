@@ -10,7 +10,7 @@
     margin: 0;
 
     font-size: 16px;
-    font-size: clamp(6px, 3.5dvw, 15px);
+    font-size: clamp(6px, 3.5dvw, 16px);
 }
 
 html,
@@ -32,6 +32,11 @@ a {
     text-decoration: none;
 }
 
+h3 {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
 h2 {
     font-size: 1.125rem;
     font-weight: 500;
@@ -40,6 +45,10 @@ h2 {
 h1 {
     font-size: 1.3rem;
     font-weight: 600;
+}
+
+button {
+    cursor: pointer;
 }
 
 #input {
@@ -74,4 +83,40 @@ h1 {
 
 span#red {
     color: var(--error);
+}
+
+.error {
+    position: relative;
+
+    width: 10.5rem;
+    height: 2rem;
+
+    padding: 1rem 3rem;
+    margin: 1rem 0;
+
+    display: none;
+
+    background-color: var(--error);
+    border-radius: 4px;
+
+    > h3 {
+        position: absolute;
+        top: 0.5rem;
+        left: 2.3rem;
+
+        color: white;
+
+        white-space: nowrap;
+    }
+
+    > img {
+        position: absolute;
+        left: 0.4rem;
+        top: 0.3rem;
+
+        height: 1.5rem;
+        width: 1.5rem;
+
+        filter: brightness(0) invert(1);
+    }
 }
