@@ -11,7 +11,6 @@ import { PetraWalletName } from 'petra-plugin-wallet-adapter';
 
 import useInputs from '@/hooks/useInputs';
 import useData from '@/hooks/useData';
-import useAptos from '@/hooks/useAptos';
 
 import './home.css';
 
@@ -19,8 +18,7 @@ export default function Home() {
     const { account, connect } = useWallet();
 
     const { handleInputError, handleSignatureError } = useInputs();
-    const { form, collectData } = useData();
-    const { sendForm } = useAptos();
+    const { form, isFulfilled, sendForm } = useData();
 
     const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>(null);
     const [buttonMessage, setButtonMessage] = useState('Connect Petra Wallet');
@@ -152,8 +150,8 @@ export default function Home() {
                             else window.open('https://petra.app/', `_blank`);
                             return;
                         }
-                        if (collectData()) {
-                            sendForm(form);
+                        if (isFulfilled()) {
+                            sendForm();
                         }
                     }}
                 >
