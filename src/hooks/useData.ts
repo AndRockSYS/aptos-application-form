@@ -1,21 +1,34 @@
+import CryptoJS from 'crypto-js';
+
+import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
 import { useState } from 'react';
 
 import { ApplicationForm, BusinessType } from 'typings';
 
 const useData = () => {
+    const { account, signMessage, signAndSubmitTransaction } = useWallet();
+
     const [form, setForm] = useState<ApplicationForm | undefined>();
 
-    const collectData = (): boolean => {
+    const isFulfilled = (): boolean => {
         const inputs = document.querySelectorAll(
             'section.application > form input, section.application > form select'
         ) as NodeListOf<HTMLInputElement>;
 
         for (let i = 0; i < inputs.length; i++) {
-            if (!inputs[i].value) {
+            if (!inputs[i].value && inputs[i].name != 'street-address-2') {
                 inputs[i].scrollIntoView();
                 return false;
             }
         }
+
+        return true;
+    };
+
+    const collectData = () => {
+        const inputs = document.querySelectorAll(
+            'section.application > form input, section.application > form select'
+        ) as NodeListOf<HTMLInputElement>;
 
         setForm({
             company: {
@@ -38,11 +51,45 @@ const useData = () => {
         });
 
         const signature = document.querySelector('canvas');
-
-        return true;
     };
 
-    return { form, collectData };
+    const sendForm = () => {
+        collectData();
+        hashData().then(async ([data, privateKey]) => {
+            const transaction: InputTransactionData = {
+                data: {
+                    function: `0x0::todolist::create_list`,
+                    functionArguments: [data],
+                },
+            };
+
+            await signAndSubmitTransaction(transaction).catch((error) =>
+                alert(`Error occured - ${error}`)
+            );
+        });
+    };
+
+    const hashData = async (): Promise<string[]> => {
+        if (!account) return [];
+
+        const signedMessage = await signMessage({
+            message: 'Application Form on Aptos',
+            nonce: '0',
+        });
+
+        const seed = (signedMessage.signature as string) + Date.now();
+
+        const privateKey = CryptoJS.SHA256(seed).toString();
+        const hashed = CryptoJS.AES.encrypt(JSON.stringify(form), privateKey).toString();
+
+        return [hashed, privateKey];
+    };
+
+    const decryptData = (data: string, privateKey: string): string => {
+        return CryptoJS.AES.decrypt(data, privateKey).toString(CryptoJS.enc.Utf8);
+    };
+
+    return { form, isFulfilled, sendForm, decryptData };
 };
 
 export default useData;
