@@ -149,10 +149,7 @@ export default function Home() {
                             if ('aptos' in window) connect(PetraWalletName);
                             else window.open('https://petra.app/', `_blank`);
                             return;
-                        }
-                        if (isFulfilled()) {
-                            sendForm();
-                        }
+                        } else if (isFulfilled()) sendForm();
                     }}
                 >
                     {buttonMessage}
