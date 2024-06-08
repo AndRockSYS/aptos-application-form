@@ -1,19 +1,33 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import SignatureCanvas from 'react-signature-canvas';
 import ReactSignatureCanvas from 'react-signature-canvas';
 
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
+import { PetraWalletName } from 'petra-plugin-wallet-adapter';
+
 import useInputs from '@/hooks/useInputs';
+import useData from '@/hooks/useData';
+import useAptos from '@/hooks/useAptos';
 
 import './home.css';
 
 export default function Home() {
-    const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>(null);
+    const { account, connect } = useWallet();
 
     const { handleInputError, handleSignatureError } = useInputs();
+    const { form, collectData } = useData();
+    const { sendForm } = useAptos();
+
+    const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>(null);
+    const [buttonMessage, setButtonMessage] = useState('Connect Petra Wallet');
+
+    useEffect(() => {
+        setButtonMessage(account ? 'Sign and Send Application' : 'Connect Petra Wallet');
+    }, [account]);
 
     const getInput = (
         className: string,
@@ -130,7 +144,21 @@ export default function Home() {
                     </button>
                     {requiredField}
                 </div>
-                <button type='button'>Continue</button>
+                <button
+                    type='button'
+                    onClick={() => {
+                        if (!account) {
+                            if ('aptos' in window) connect(PetraWalletName);
+                            else window.open('https://petra.app/', `_blank`);
+                            return;
+                        }
+                        if (collectData()) {
+                            sendForm(form);
+                        }
+                    }}
+                >
+                    {buttonMessage}
+                </button>
             </form>
         </section>
     );
