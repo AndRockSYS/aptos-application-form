@@ -58,7 +58,9 @@ const useData = () => {
         hashData().then(async ([data, privateKey]) => {
             const transaction: InputTransactionData = {
                 data: {
-                    function: `0x0::todolist::create_list`,
+                    function: `${
+                        process.env.NEXT_PUBLIC_MODULE_ADDRESS as string
+                    }::application_form::add_application`,
                     functionArguments: [data],
                 },
             };
