@@ -27,3 +27,8 @@ export interface ApplicationForm {
     company: Company;
     address: Address;
 }
+
+export interface AptosApplication {
+    applicant: string;
+    hashData: string;
+}
