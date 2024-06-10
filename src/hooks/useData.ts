@@ -4,6 +4,7 @@ import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-reac
 import { useState } from 'react';
 
 import { ApplicationForm, BusinessType } from 'typings';
+import KeyStore from '@/class/KeyStore';
 
 const useData = () => {
     const { account, signMessage, signAndSubmitTransaction } = useWallet();
@@ -52,10 +53,18 @@ const useData = () => {
         });
     };
 
-    const sendForm = (signatureData: string | undefined) => {
-        if (!signatureData) return;
+    const sendForm = (signatureData: string) => {
+        if (!account) return;
+
         collectData(signatureData);
         hashData().then(async ([data, privateKey]) => {
+            const keyStore = new KeyStore();
+
+            await keyStore.addKey(account.address, privateKey).catch((error) => {
+                alert(`Error - ${error}`);
+                return;
+            });
+
             const transaction: InputTransactionData = {
                 data: {
                     function: `${
@@ -64,6 +73,7 @@ const useData = () => {
                     functionArguments: [data],
                 },
             };
+
             await signAndSubmitTransaction(transaction).catch((error) =>
                 alert(`Error occured - ${error}`)
             );
@@ -86,11 +96,20 @@ const useData = () => {
         return [hashed, privateKey];
     };
 
-    const decodeData = (data: string, privateKey: string): string => {
-        return CryptoJS.AES.decrypt(data, privateKey).toString(CryptoJS.enc.Utf8);
+    const decodeData = (
+        data: string | undefined,
+        privateKey: string
+    ): ApplicationForm | undefined => {
+        if (!data) return;
+
+        const json = CryptoJS.AES.decrypt(data, privateKey).toString(CryptoJS.enc.Utf8);
+
+        console.log({ json });
+
+        return JSON.parse(json);
     };
 
-    return { isFulfilled, sendForm };
+    return { isFulfilled, sendForm, decodeData };
 };
 
 export default useData;
