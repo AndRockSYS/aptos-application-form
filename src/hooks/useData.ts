@@ -1,15 +1,12 @@
 import CryptoJS from 'crypto-js';
 
 import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
-import { useState } from 'react';
 
 import { ApplicationForm, BusinessType } from 'typings';
 import KeyStore from '@/class/KeyStore';
 
 const useData = () => {
     const { account, signMessage, signAndSubmitTransaction } = useWallet();
-
-    const [form, setForm] = useState<ApplicationForm | undefined>();
 
     const isFulfilled = (): boolean => {
         const inputs = document.querySelectorAll(
@@ -26,12 +23,12 @@ const useData = () => {
         return true;
     };
 
-    const collectData = (signatureData: string) => {
+    const collectData = (signatureData: string): ApplicationForm => {
         const inputs = document.querySelectorAll(
             'section.application > form input, section.application > form select'
         ) as NodeListOf<HTMLInputElement>;
 
-        setForm({
+        return {
             company: {
                 name: inputs[0].value,
                 registrationNumber: inputs[1].value,
@@ -50,14 +47,16 @@ const useData = () => {
             firstName: inputs[11].value,
             lastName: inputs[12].value,
             signature: signatureData,
-        });
+        };
     };
 
     const sendForm = (signatureData: string) => {
+        console.log(signatureData);
         if (!account) return;
 
-        collectData(signatureData);
-        hashData().then(async ([data, privateKey]) => {
+        const application = collectData(signatureData);
+
+        hashData(application).then(async ([data, privateKey]) => {
             const keyStore = new KeyStore();
 
             await keyStore.addKey(account.address, privateKey).catch((error) => {
@@ -80,7 +79,7 @@ const useData = () => {
         });
     };
 
-    const hashData = async (): Promise<string[]> => {
+    const hashData = async (form: ApplicationForm): Promise<string[]> => {
         if (!account) return [];
 
         const signedMessage = await signMessage({
