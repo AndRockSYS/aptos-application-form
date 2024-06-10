@@ -1,42 +1,60 @@
 import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk';
-import { useWallet } from '@aptos-labs/wallet-adapter-react';
+import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 
 import { AptosApplication } from 'typings';
 
 const useAptos = () => {
-    const { account } = useWallet();
+    const { account, signAndSubmitTransaction } = useWallet();
 
     const [applications, setApplications] = useState<AptosApplication[]>([]);
+    const [approved, setApproved] = useState<AptosApplication[]>([]);
 
-    const updateApplication = () => {
+    const requestApplications = async (method: string): Promise<AptosApplication[]> => {
         const aptosConfig = new AptosConfig({ network: Network.DEVNET });
         const aptos = new Aptos(aptosConfig);
 
-        aptos
-            .view<[string[], string[]]>({
-                payload: {
-                    function: `${
-                        process.env.NEXT_PUBLIC_MODULE_ADDRESS as string
-                    }::application_form::get_applications`,
-                },
-            })
-            .then(([addresses, hashes]) => {
-                const temp: AptosApplication[] = [];
+        const [addresses, hashes] = await aptos.view<[string[], string[]]>({
+            payload: {
+                function: `${
+                    process.env.NEXT_PUBLIC_MODULE_ADDRESS as string
+                }::application_form::${method}`,
+            },
+        });
 
-                addresses.forEach((address, index) => {
-                    temp.push({ applicant: address, hashData: hashes[index] });
-                });
+        return addresses.map((address, index) => {
+            return { applicant: address, hashData: hashes[index] };
+        });
+    };
 
-                setApplications(applications);
-            });
+    const updateApplication = () => {
+        requestApplications('get_applications').then((data) => setApplications(data));
+    };
+
+    const updateApproved = () => {
+        requestApplications('get_all_approved').then((data) => setApproved(data));
+    };
+
+    const reviewApplication = async (applicant: string, isApproved: boolean) => {
+        const transaction: InputTransactionData = {
+            data: {
+                function: `${
+                    process.env.NEXT_PUBLIC_MODULE_ADDRESS as string
+                }::application_form::review_application`,
+                functionArguments: [applicant, isApproved],
+            },
+        };
+        await signAndSubmitTransaction(transaction).catch((error) =>
+            alert(`Error occured - ${error}`)
+        );
     };
 
     useEffect(() => {
         updateApplication();
+        updateApproved();
     }, [account]);
 
-    return { applications, updateApplication };
+    return { applications, updateApplication, approved, updateApproved, reviewApplication };
 };
 
 export default useAptos;
