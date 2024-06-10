@@ -143,13 +143,14 @@ export default function Home() {
                     {requiredField}
                 </div>
                 <button
+                    id='green-button'
                     type='button'
                     onClick={() => {
                         if (!account) {
                             if ('aptos' in window) connect(PetraWalletName);
                             else window.open('https://petra.app/', `_blank`);
                             return;
-                        } else if (isFulfilled()) sendForm(sigCanvas?.toDataURL());
+                        } else if (isFulfilled() && sigCanvas) sendForm(sigCanvas.toDataURL());
                     }}
                 >
                     {buttonMessage}
