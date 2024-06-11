@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { ApplicationForm, BusinessType } from 'typings';
 
@@ -33,21 +33,19 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
                     </button>
                 </div>
             ),
-        [isApproved]
+        [isApproved, applicant]
     );
 
+    const canvas = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
-        if (form.signature) {
-            const canvas = document.querySelector(
-                'section.approvement-form canvas'
-            ) as HTMLCanvasElement;
-            const context = canvas.getContext('2d');
+        if (!canvas.current) return;
 
-            const image = new Image(200);
-            image.src = form.signature;
-            context?.drawImage(image, 0, 0);
-        }
-    }, [form]);
+        const context = canvas.current.getContext('2d');
+
+        const image = new Image(200);
+        image.src = form.signature;
+        context?.drawImage(image, 0, 0);
+    }, [form, canvas]);
 
     return (
         <div className='transparent-background'>
@@ -60,7 +58,10 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
                     <h3>Name: {form.company.name}</h3>
                     <h3>Registration Number: {form.company.registrationNumber}</h3>
                     <h3>Country: {form.company.country}</h3>
-                    <h3>Business Type: </h3>
+                    <h3>
+                        Business Type:{' '}
+                        {form.company.type == BusinessType.Services ? 'Services' : 'Trade'}
+                    </h3>
                 </article>
                 <article className='address'>
                     <h2>Business Address</h2>
@@ -82,7 +83,7 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
                     <h2>Authorised Personnel</h2>
                     <h3>First Name: {form.firstName}</h3>
                     <h3>Last Name: {form.lastName}</h3>
-                    <canvas></canvas>
+                    <canvas ref={canvas}></canvas>
                 </article>
                 {buttons}
             </section>
