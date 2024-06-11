@@ -2,6 +2,8 @@ import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk';
 import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 
+import KeyStore from '@/class/KeyStore';
+
 import { AptosApplication } from 'typings';
 
 const useAptos = () => {
@@ -11,6 +13,9 @@ const useAptos = () => {
     const [approved, setApproved] = useState<AptosApplication[]>([]);
 
     const requestApplications = async (method: string): Promise<AptosApplication[]> => {
+        if (!account || !account.address.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string))
+            return [];
+
         const aptosConfig = new AptosConfig({ network: Network.DEVNET });
         const aptos = new Aptos(aptosConfig);
 
@@ -47,6 +52,11 @@ const useAptos = () => {
         await signAndSubmitTransaction(transaction).catch((error) =>
             alert(`Error occured - ${error}`)
         );
+
+        if (!isApproved) {
+            const keyStore = new KeyStore();
+            await keyStore.deleteKey(applicant);
+        }
     };
 
     useEffect(() => {
