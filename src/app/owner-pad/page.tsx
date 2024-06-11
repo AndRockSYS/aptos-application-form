@@ -24,26 +24,26 @@ export default function OwnerPad() {
     const [isApproved, setIsApproved] = useState(false);
     const [applicant, setApplicant] = useState('');
     const [currForm, setCurrForm] = useState<ApplicationForm>({
-        firstName: '',
-        lastName: '',
+        firstName: 'Null',
+        lastName: 'Null',
         signature: '',
-        email: '',
-        phone: '',
+        email: 'Null',
+        phone: 'Null',
         company: {
-            name: '',
-            registrationNumber: '',
-            country: '',
+            name: 'Null',
+            registrationNumber: 'Null',
+            country: 'Null',
             type: 0,
         },
         address: {
-            street: '',
-            city: '',
-            state: '',
-            postalCode: '',
+            street: 'Null',
+            city: 'Null',
+            state: 'Null',
+            postalCode: 'Null',
         },
     });
 
-    const openForm = async (applicant: string) => {
+    const openForm = async (applicant: string, isApproved: boolean) => {
         const keyStore = new KeyStore();
 
         const privateKey = await keyStore.getKey(applicant);
@@ -58,6 +58,7 @@ export default function OwnerPad() {
 
         if (!decodedApplication) return;
 
+        setIsApproved(isApproved);
         setApplicant(applicant);
         setCurrForm(decodedApplication);
 
@@ -71,8 +72,7 @@ export default function OwnerPad() {
                 key={application.applicant}
                 className='application'
                 onClick={() => {
-                    setIsApproved(isApproved);
-                    openForm(application.applicant);
+                    openForm(application.applicant, isApproved);
                 }}
             >
                 <h2>
@@ -103,19 +103,15 @@ export default function OwnerPad() {
                     }
                 }}
             >
-                {useMemo(() => (account ? 'Retrieve List' : 'Connect Wallet'), [account])}
+                {useMemo(() => (account ? 'Update List' : 'Connect Wallet'), [account])}
             </button>
-            {useMemo(
-                () => (
-                    <ApprovementForm
-                        applicant={applicant}
-                        isApproved={isApproved}
-                        form={currForm}
-                        reviewApplication={reviewApplication}
-                    />
-                ),
-                [applicant, currForm, isApproved]
-            )}
+
+            <ApprovementForm
+                applicant={applicant}
+                isApproved={isApproved}
+                form={currForm}
+                reviewApplication={reviewApplication}
+            />
         </section>
     );
 }
