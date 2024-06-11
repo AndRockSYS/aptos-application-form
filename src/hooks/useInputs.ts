@@ -9,7 +9,7 @@ const useInputs = () => {
         let amount = 0;
 
         inputs.forEach((input) => {
-            if (input.value == '') amount++;
+            if (input.value == '' && input.name != 'street-address-2') amount++;
 
             input.style.borderColor =
                 input.value != '' || input.name == 'street-address-2'
