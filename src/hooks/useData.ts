@@ -1,9 +1,9 @@
 import CryptoJS from 'crypto-js';
-
 import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
 
-import { ApplicationForm, BusinessType } from 'typings';
 import KeyStore from '@/class/KeyStore';
+
+import { ApplicationForm, BusinessType } from 'typings';
 
 const useData = () => {
     const { account, signMessage, signAndSubmitTransaction } = useWallet();
@@ -51,7 +51,6 @@ const useData = () => {
     };
 
     const sendForm = (signatureData: string) => {
-        console.log(signatureData);
         if (!account) return;
 
         const application = collectData(signatureData);
@@ -90,7 +89,7 @@ const useData = () => {
         const seed = (signedMessage.signature as string) + Date.now();
 
         const privateKey = CryptoJS.SHA256(seed).toString();
-        const hashed = CryptoJS.AES.encrypt(JSON.stringify(form), privateKey).toString();
+        const hashed = CryptoJS.AES.encrypt(JSON.stringify({ form }), privateKey).toString();
 
         return [hashed, privateKey];
     };
@@ -101,11 +100,11 @@ const useData = () => {
     ): ApplicationForm | undefined => {
         if (!data) return;
 
-        const json = CryptoJS.AES.decrypt(data, privateKey).toString(CryptoJS.enc.Utf8);
+        const stringData = CryptoJS.AES.decrypt(data, privateKey).toString(CryptoJS.enc.Utf8);
 
-        console.log({ json });
+        const json = JSON.parse(stringData);
 
-        return JSON.parse(json);
+        return json.form;
     };
 
     return { isFulfilled, sendForm, decodeData };
