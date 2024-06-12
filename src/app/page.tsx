@@ -88,6 +88,14 @@ export default function Home() {
                             <option value='Services'>Services</option>
                         </select>
                     </div>
+                    <div id='input'>
+                        <input
+                            type='file'
+                            name='company-logo'
+                            accept='image/png, image/jpg, image/jpeg'
+                            onBlur={() => handleInputError(`div.company`)}
+                        />
+                    </div>
                     {requiredField}
                 </div>
                 <div className='address'>
