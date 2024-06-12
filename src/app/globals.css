@@ -2,6 +2,7 @@
     --passive: #57647e;
     --error: #dc2626;
     --active: #2e69ff;
+    --logo-color: #17375e;
 }
 
 * {
@@ -10,7 +11,7 @@
     margin: 0;
 
     font-size: 16px;
-    font-size: clamp(6px, 3.5dvw, 16px);
+    font-size: clamp(6px, 3dvw, 16px);
 }
 
 html,
@@ -33,7 +34,7 @@ a {
 }
 
 h3 {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 500;
 }
 
@@ -43,7 +44,7 @@ h2 {
 }
 
 h1 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 600;
 }
 

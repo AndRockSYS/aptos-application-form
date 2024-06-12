@@ -60,9 +60,22 @@ export default function Home() {
             ></script>
 
             <form action='submit'>
-                <Image src={'/logo.png'} alt='logo' width={160} height={40}></Image>
-                <h1>TBP WORLD NEUTRAL SINGLE MARKET SOVEREIGN TRADING COMPANY</h1>
-                <h1>APPLICATION FORM</h1>
+                <section className='company-info'>
+                    <Image src={'/logo.png'} alt='logo' width={1464} height={180}></Image>
+                    <h1>Next Generation Global Trade Ecosystem</h1>
+
+                    <h1>
+                        TBP WORLD NEUTRAL SINGLE MARKET SOVEREIGN TRADING COMPANY SIGN ON BLOCKCHAIN
+                        SMART CONTRACT FORM
+                    </h1>
+                    <h3>
+                        UPON SIGNING-ON, A UNIQUE TBP BLOCKCHAIN WALLET WOULD BE ASSIGNED BECOMING
+                        YOUR COMPANY PASSPORT TO OPERATE WITHIN THE TBP WORLD NEUTRAL SINGLE MARKET
+                        TRADE CORRIDOR, ALL YOUR COMPANY TRANSACTIONS WOULD BE RECORDED IN YOUR
+                        WALLET
+                    </h3>
+                </section>
+
                 <div className='company'>
                     <h2>Company Info {r}</h2>
                     {getInput('company', 'company', 'Company Name')}

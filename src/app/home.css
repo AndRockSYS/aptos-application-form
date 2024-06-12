@@ -21,11 +21,31 @@ section.application > form {
     > h1 {
         width: stretch;
 
-        align-self: flex-start;
-
         padding-bottom: 1rem;
 
         border-bottom: 1px solid #ededf1;
+    }
+
+    > section.company-info {
+        display: inherit;
+        flex-direction: inherit;
+        align-items: inherit;
+        row-gap: 1rem;
+
+        text-align: center;
+
+        > h1:first-of-type {
+            color: var(--error);
+        }
+
+        > * {
+            color: var(--logo-color);
+        }
+
+        > img {
+            width: 22rem;
+            height: auto;
+        }
     }
 
     > div {
