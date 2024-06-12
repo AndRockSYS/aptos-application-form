@@ -36,16 +36,27 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
         [isApproved, applicant]
     );
 
-    const canvas = useRef<HTMLCanvasElement>(null);
+    const signatureCanvas = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
-        if (!canvas.current) return;
+        if (!signatureCanvas.current) return;
 
-        const context = canvas.current.getContext('2d');
+        const context = signatureCanvas.current.getContext('2d');
 
         const image = new Image(200);
         image.src = form.signature;
         context?.drawImage(image, 0, 0);
-    }, [form, canvas]);
+    }, [form, signatureCanvas]);
+
+    const logoCanvas = useRef<HTMLCanvasElement>(null);
+    useEffect(() => {
+        if (!logoCanvas.current) return;
+
+        const context = logoCanvas.current.getContext('2d');
+
+        const image = new Image(100);
+        image.src = `data:image/png;base64,${form.company.logo}`;
+        context?.drawImage(image, 0, 0);
+    }, [form, logoCanvas]);
 
     return (
         <div className='transparent-background'>
@@ -83,7 +94,8 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
                     <h2>Authorised Personnel</h2>
                     <h3>First Name: {form.firstName}</h3>
                     <h3>Last Name: {form.lastName}</h3>
-                    <canvas ref={canvas}></canvas>
+                    <canvas className='signature' ref={signatureCanvas}></canvas>
+                    <canvas className='logo' ref={logoCanvas}></canvas>
                 </article>
                 {buttons}
             </section>
