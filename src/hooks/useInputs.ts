@@ -15,6 +15,13 @@ const useInputs = () => {
                 input.value != '' || input.name == 'street-address-2'
                     ? 'var(--passive)'
                     : 'var(--error)';
+
+            if (input.name == 'company-logo' && !input.files)
+                if (input.files) input.style.borderColor = 'var(--passive)';
+                else {
+                    amount++;
+                    input.style.borderColor = 'var(--passive)';
+                }
         });
 
         const error = document.querySelector(`${sectionName} div.error`) as HTMLElement;

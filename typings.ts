@@ -4,6 +4,7 @@ export enum BusinessType {
 }
 
 export interface Company {
+    logo: string;
     name: string;
     registrationNumber: string;
     country: string;

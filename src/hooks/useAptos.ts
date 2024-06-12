@@ -2,7 +2,7 @@ import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk';
 import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 
-import KeyStore from '@/class/KeyStore';
+import Firebase from '@/service/Firebase';
 
 import { AptosApplication } from 'typings';
 
@@ -54,8 +54,8 @@ const useAptos = () => {
         );
 
         if (!isApproved) {
-            const keyStore = new KeyStore();
-            await keyStore.deleteKey(applicant);
+            const firebase = new Firebase();
+            firebase.deleteApplicant(applicant);
         }
     };
 

@@ -4,9 +4,9 @@ import { PetraWalletName } from 'petra-plugin-wallet-adapter';
 import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { useMemo, useState } from 'react';
 
-import ApprovementForm from '@/components/ApprovementForm';
+import Firebase from '@/service/Firebase';
 
-import KeyStore from '@/class/KeyStore';
+import ApprovementForm from '@/components/ApprovementForm';
 
 import useData from '@/hooks/useData';
 import useAptos from '@/hooks/useAptos';
@@ -30,6 +30,7 @@ export default function OwnerPad() {
         email: 'Null',
         phone: 'Null',
         company: {
+            logo: '',
             name: 'Null',
             registrationNumber: 'Null',
             country: 'Null',
@@ -44,9 +45,9 @@ export default function OwnerPad() {
     });
 
     const openForm = async (applicant: string, isApproved: boolean) => {
-        const keyStore = new KeyStore();
+        const firebase = new Firebase();
 
-        const privateKey = await keyStore.getKey(applicant);
+        const privateKey = await firebase.getApplicant(applicant);
 
         const application = (isApproved ? approved : applications).find((item) => {
             if (item.applicant == applicant) return item;
