@@ -16,18 +16,18 @@ export default class KeyStore {
     private app = initializeApp(firebaseConfig);
     private db = getDatabase(this.app);
 
-    async getKey(applicant: string): Promise<string> {
-        const snapshot = await get(child(ref(this.db), `keys/${applicant}`));
+    async getApplicant(applicant: string): Promise<string> {
+        const snapshot = await get(child(ref(this.db), `applicant/${applicant}`));
         return snapshot.exists() ? snapshot.val() : '';
     }
 
-    async addKey(applicant: string, key: string) {
+    async addApplicant(applicant: string, key: string) {
         const updates: any = {};
         updates[`/${applicant}`] = key;
-        await update(ref(this.db, `keys`), updates);
+        await update(ref(this.db, `applicant`), updates);
     }
 
-    async deleteKey(applicant: string) {
-        await remove(ref(this.db, `keys/${applicant}`));
+    async deleteApplicant(applicant: string) {
+        await remove(ref(this.db, `applicant/${applicant}`));
     }
 }
