@@ -28,7 +28,7 @@ export default function Home() {
                         Connect Passport
                     </button>
                     <Link id='green-button' href={'/company-form'}>
-                        For Company
+                        Company Sign Up
                     </Link>
                 </div>
             );
@@ -41,10 +41,10 @@ export default function Home() {
                     {isOwner ? 'Owner Pad' : 'My Application'}
                 </Link>
                 <Link id='green-button' href={'/company-form'}>
-                    For Company
+                    Company Sign Up
                 </Link>
                 <Link id='green-button' href={'/member-form'}>
-                    For Member
+                    Member Sign Up
                 </Link>
             </div>
         );
