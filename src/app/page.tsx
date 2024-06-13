@@ -23,9 +23,14 @@ export default function Home() {
         const isOwner = account.address.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string);
 
         return (
-            <Link id='green-button' href={isOwner ? '/owner-pad' : '/my-application'}>
-                {isOwner ? 'Owner Pad' : 'My Application'}
-            </Link>
+            <div>
+                <Link id='green-button' href={isOwner ? '/owner-pad' : '/my-application'}>
+                    {isOwner ? 'Owner Pad' : 'My Application'}
+                </Link>
+                <Link id='green-button' href={'/company-form'}>
+                    Company Form
+                </Link>
+            </div>
         );
     }, [account]);
 
