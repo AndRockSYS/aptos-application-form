@@ -37,6 +37,24 @@ const useAptos = () => {
         requestApplications('get_all_approved').then((data) => setApproved(data));
     };
 
+    const isMemberInvited = async (company: string, member: string): Promise<boolean> => {
+        const aptosConfig = new AptosConfig({ network: Network.DEVNET });
+        const aptos = new Aptos(aptosConfig);
+
+        const data = await aptos.view<boolean[]>({
+            payload: {
+                function: `${
+                    process.env.NEXT_PUBLIC_MODULE_ADDRESS as string
+                }::application_form::is_invited`,
+                functionArguments: [company, member],
+            },
+        });
+
+        console.log(data);
+
+        return false;
+    };
+
     const reviewApplication = async (applicant: string, isApproved: boolean) => {
         const transaction: InputTransactionData = {
             data: {
@@ -61,7 +79,14 @@ const useAptos = () => {
         updateApproved();
     }, [account]);
 
-    return { applications, updateApplication, approved, updateApproved, reviewApplication };
+    return {
+        applications,
+        updateApplication,
+        approved,
+        updateApproved,
+        reviewApplication,
+        isMemberInvited,
+    };
 };
 
 export default useAptos;

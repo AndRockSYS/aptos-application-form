@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { child, get, getDatabase, ref, remove, update } from 'firebase/database';
+import { Member } from 'typings';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDGLuNUvgTThjkzcfifZCQitOkFF2ntd0Q',
@@ -29,5 +30,11 @@ export default class KeyStore {
 
     async deleteApplicant(applicant: string) {
         await remove(ref(this.db, `applicant/${applicant}`));
+    }
+
+    async addMember(company: string, member: string, data: Member) {
+        const updates: any = {};
+        updates[`/${member}`] = data;
+        await update(ref(this.db, `company/${company}`), updates);
     }
 }
