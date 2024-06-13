@@ -1,29 +1,59 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
+import { useMemo } from 'react';
+import Image from 'next/image';
 
 import { ApplicationForm, BusinessType } from 'typings';
 
 import './approvement-form.css';
 
 interface Props {
-    applicant: string;
-    isApproved: boolean;
-    form: ApplicationForm;
-    reviewApplication: (applicant: string, isApproved: boolean) => Promise<void>;
+    applicant: string | undefined;
+    isApproved?: boolean;
+    form: ApplicationForm | undefined;
+    reviewApplication?: (applicant: string, isApproved: boolean) => Promise<void>;
 }
 
 export default function ApprovementForm({ applicant, form, isApproved, reviewApplication }: Props) {
+    const { account } = useWallet();
+
+    if (!form)
+        form = {
+            firstName: 'Null',
+            lastName: 'Null',
+            signature: '',
+            email: 'Null',
+            phone: 'Null',
+            company: {
+                logo: '',
+                name: 'Null',
+                registrationNumber: 'Null',
+                country: 'Null',
+                type: 0,
+            },
+            address: {
+                street: 'Null',
+                city: 'Null',
+                state: 'Null',
+                postalCode: 'Null',
+            },
+        };
+
     const closeForm = () => {
         const form = document.querySelector('div.transparent-background') as HTMLElement;
         form.style.display = 'none';
     };
 
-    const buttons = useMemo(
-        () =>
-            isApproved ? (
-                <></>
-            ) : (
+    const buttons = useMemo(() => {
+        if (isApproved) return <></>;
+
+        if (
+            reviewApplication &&
+            applicant &&
+            account?.address?.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string)
+        )
+            return (
                 <div>
                     <button id='green-button' onClick={() => reviewApplication(applicant, true)}>
                         Approve
@@ -32,31 +62,8 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
                         Decline
                     </button>
                 </div>
-            ),
-        [isApproved, applicant]
-    );
-
-    const signatureCanvas = useRef<HTMLCanvasElement>(null);
-    useEffect(() => {
-        if (!signatureCanvas.current) return;
-
-        const context = signatureCanvas.current.getContext('2d');
-
-        const image = new Image(200);
-        image.src = form.signature;
-        context?.drawImage(image, 0, 0);
-    }, [form, signatureCanvas]);
-
-    const logoCanvas = useRef<HTMLCanvasElement>(null);
-    useEffect(() => {
-        if (!logoCanvas.current) return;
-
-        const context = logoCanvas.current.getContext('2d');
-
-        const image = new Image(100);
-        image.src = `data:image/png;base64,${form.company.logo}`;
-        context?.drawImage(image, 0, 0);
-    }, [form, logoCanvas]);
+            );
+    }, [isApproved, applicant, reviewApplication]);
 
     return (
         <div className='transparent-background'>
@@ -65,6 +72,18 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
                     Close
                 </button>
                 <article className='company'>
+                    {useMemo(
+                        () => (
+                            <Image
+                                className='logo'
+                                src={`data:image/png;base64,${form.company.logo}`}
+                                alt='logo'
+                                width={50}
+                                height={50}
+                            ></Image>
+                        ),
+                        [form]
+                    )}
                     <h2>Company</h2>
                     <h3>Name: {form.company.name}</h3>
                     <h3>Registration Number: {form.company.registrationNumber}</h3>
@@ -94,8 +113,18 @@ export default function ApprovementForm({ applicant, form, isApproved, reviewApp
                     <h2>Authorised Personnel</h2>
                     <h3>First Name: {form.firstName}</h3>
                     <h3>Last Name: {form.lastName}</h3>
-                    <canvas className='signature' ref={signatureCanvas}></canvas>
-                    <canvas className='logo' ref={logoCanvas}></canvas>
+                    {useMemo(
+                        () => (
+                            <Image
+                                className='signature'
+                                src={form.signature}
+                                alt='signature'
+                                width={250}
+                                height={150}
+                            ></Image>
+                        ),
+                        [form]
+                    )}
                 </article>
                 {buttons}
             </section>
