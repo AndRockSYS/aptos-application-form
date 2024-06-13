@@ -21,10 +21,10 @@ export default function Home() {
     const { isFulfilled, sendForm } = useData();
 
     const [sigCanvas, setSigCanvas] = useState<ReactSignatureCanvas | null>(null);
-    const [buttonMessage, setButtonMessage] = useState('Connect Petra Wallet');
+    const [buttonMessage, setButtonMessage] = useState('Sign Up');
 
     useEffect(() => {
-        setButtonMessage(account ? 'Sign and Send Application' : 'Connect Petra Wallet');
+        setButtonMessage(account ? 'Sign and Send Application' : 'Sign Up');
     }, [account]);
 
     const getInput = (

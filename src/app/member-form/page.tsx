@@ -20,10 +20,10 @@ export default function Home() {
     const { handleInputError } = useInputs();
     const { isFulfilled, sendForm } = useData();
 
-    const [buttonMessage, setButtonMessage] = useState('Connect Petra Wallet');
+    const [buttonMessage, setButtonMessage] = useState('Sign Up');
 
     useEffect(() => {
-        setButtonMessage(account ? 'Sign and Send Application' : 'Connect Petra Wallet');
+        setButtonMessage(account ? 'Sign and Send Application' : 'Sign Up');
     }, [account]);
 
     const getInput = (
