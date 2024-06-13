@@ -16,7 +16,15 @@ export default function Home() {
         if (!account)
             return (
                 <div className='button'>
-                    <button id='green-button' onClick={() => connect(PetraWalletName)}>
+                    <button
+                        id='green-button'
+                        onClick={() => {
+                            if (!account) {
+                                if ('aptos' in window) connect(PetraWalletName);
+                                else window.open('https://petra.app/', `_blank`);
+                            }
+                        }}
+                    >
                         Connect Wallet
                     </button>
                     <Link id='green-button' href={'/company-form'}>
