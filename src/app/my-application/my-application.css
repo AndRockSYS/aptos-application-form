@@ -10,16 +10,14 @@ section.my-application {
         width: 100%;
     }
 
-    > div.application {
-        width: fit-content;
+    > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 1rem;
 
-        padding: 1rem 1.5rem;
-
-        text-align: center;
-
-        border: 1px solid var(--passive);
-        border-radius: 4px;
-
-        cursor: pointer;
+        > input {
+            padding: 1rem;
+        }
     }
 }
