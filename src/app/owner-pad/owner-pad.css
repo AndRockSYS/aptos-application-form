@@ -9,17 +9,4 @@ section.owner-pad {
     @media screen and (max-width: 900px) {
         width: 100%;
     }
-
-    > div.application {
-        width: fit-content;
-
-        padding: 1rem 1.5rem;
-
-        text-align: center;
-
-        border: 1px solid var(--passive);
-        border-radius: 4px;
-
-        cursor: pointer;
-    }
 }
