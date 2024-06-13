@@ -120,21 +120,22 @@ export default function Home() {
                         ad hoc within the corridors and the hubs of the TBP world neutral single
                         market to access TBP trade neutrality provision, which includes free trading
                         that is independent of any country/region/bloc trading policies and
-                        barriers. It is also neutral to any sovereign state's recognition or trade
-                        disputes. Must meet the host country's immigration requirement for the
-                        admission of its personnel into the countries hosting the TBP corridors and
-                        its hubs by the host country's immigration agency. Shall not be involved in
-                        the trading, storage and supply chain of humans in the form of trafficking
-                        or slavery. Shall not be involved in the trading, storage and supply chain
-                        of endangered/banned animal and plant species. Shall not be involved in the
-                        trading, processing, manufacturing, storage and supply chain of ammunition.
+                        barriers. It is also neutral to any sovereign state&apos;s recognition or
+                        trade disputes. Must meet the host country&apos;s immigration requirement
+                        for the admission of its personnel into the countries hosting the TBP
+                        corridors and its hubs by the host country&apos;s immigration agency. Shall
+                        not be involved in the trading, storage and supply chain of humans in the
+                        form of trafficking or slavery. Shall not be involved in the trading,
+                        storage and supply chain of endangered/banned animal and plant species.
                         Shall not be involved in the trading, processing, manufacturing, storage and
-                        supply chain of narcotic drugs and psychotropic substances. Shall not be
-                        involved in the trading, processing, manufacturing, storage and supply chain
-                        of goods that violate intellectual property that has been registered with
-                        any sovereign state through the World Intellectual Property Organisation.
-                        (WIPO) Shall not be involved in the trading, processing, manufacturing,
-                        storage and supply chain of counterfeit goods.
+                        supply chain of ammunition. Shall not be involved in the trading,
+                        processing, manufacturing, storage and supply chain of narcotic drugs and
+                        psychotropic substances. Shall not be involved in the trading, processing,
+                        manufacturing, storage and supply chain of goods that violate intellectual
+                        property that has been registered with any sovereign state through the World
+                        Intellectual Property Organisation. (WIPO) Shall not be involved in the
+                        trading, processing, manufacturing, storage and supply chain of counterfeit
+                        goods.
                         <br /> <br />
                         All the company data submitted shall be uploaded onto the TBP Encrypted
                         Blockchain Network and accessed by relevant vested stakeholders, including
