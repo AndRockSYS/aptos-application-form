@@ -2,6 +2,7 @@
     --passive: #57647e;
     --error: #dc2626;
     --active: #2e69ff;
+    --green: #00ba4d;
     --logo-color: #17375e;
 }
 
@@ -128,7 +129,7 @@ span#red {
     font-size: 1.1rem;
     color: white;
 
-    background-color: #18bd5b;
+    background-color: var(--green);
     border: 0;
     border-radius: 4px;
 }
@@ -142,4 +143,17 @@ span#red {
     background-color: var(--error);
     border: 0;
     border-radius: 4px;
+}
+
+#white-button {
+    width: fit-content;
+
+    padding: 1rem 1.5rem;
+
+    text-align: center;
+
+    border: 1px solid var(--passive);
+    border-radius: 4px;
+
+    cursor: pointer;
 }
