@@ -17,7 +17,7 @@ import './my-application.css';
 
 export default function ApplicationStatus() {
     const { account, connect } = useWallet();
-    const { applications, approved } = useAptos();
+    const { applications, approved, inviteMember } = useAptos();
     const { decodeData } = useData();
 
     const [form, setForm] = useState<ApplicationForm | undefined>();
@@ -77,6 +77,28 @@ export default function ApplicationStatus() {
                             <button id='white-button' onClick={openForm}>
                                 Open Application
                             </button>
+                            <div>
+                                <input
+                                    type='text'
+                                    name='member-address'
+                                    placeholder='Company Member Address'
+                                />
+                                <button
+                                    id='white-button'
+                                    onClick={() => {
+                                        const input = document.querySelector(
+                                            'section.my-application > div > input'
+                                        ) as HTMLInputElement;
+
+                                        if (!input.value) return;
+
+                                        inviteMember(input.value);
+                                    }}
+                                >
+                                    Invite
+                                </button>
+                            </div>
+
                             {isApproved ? (
                                 <h2>Your application was approved</h2>
                             ) : (

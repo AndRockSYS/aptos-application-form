@@ -37,6 +37,20 @@ const useAptos = () => {
         requestApplications('get_all_approved').then((data) => setApproved(data));
     };
 
+    const inviteMember = async (member: string) => {
+        const transaction: InputTransactionData = {
+            data: {
+                function: `${
+                    process.env.NEXT_PUBLIC_MODULE_ADDRESS as string
+                }::application_form::invite_member`,
+                functionArguments: [member],
+            },
+        };
+        await signAndSubmitTransaction(transaction).catch((error) =>
+            alert(`Error occured - ${error}`)
+        );
+    };
+
     const isMemberInvited = async (company: string, member: string): Promise<boolean> => {
         const aptosConfig = new AptosConfig({ network: Network.DEVNET });
         const aptos = new Aptos(aptosConfig);
@@ -50,9 +64,7 @@ const useAptos = () => {
             },
         });
 
-        console.log(data);
-
-        return false;
+        return data[0];
     };
 
     const reviewApplication = async (applicant: string, isApproved: boolean) => {
@@ -85,6 +97,7 @@ const useAptos = () => {
         approved,
         updateApproved,
         reviewApplication,
+        inviteMember,
         isMemberInvited,
     };
 };
