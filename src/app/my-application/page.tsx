@@ -107,7 +107,7 @@ export default function ApplicationStatus() {
                         </>
                     ) : (
                         <h2>
-                            You currently don't have any applications or your application was
+                            You currently do not have any applications or your application was
                             declined
                         </h2>
                     ),
