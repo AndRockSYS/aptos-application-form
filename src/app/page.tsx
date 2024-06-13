@@ -23,12 +23,15 @@ export default function Home() {
         const isOwner = account.address.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string);
 
         return (
-            <div>
+            <div className='button'>
                 <Link id='green-button' href={isOwner ? '/owner-pad' : '/my-application'}>
                     {isOwner ? 'Owner Pad' : 'My Application'}
                 </Link>
                 <Link id='green-button' href={'/company-form'}>
-                    Company Form
+                    For Company
+                </Link>
+                <Link id='green-button' href={'/member-form'}>
+                    For Member
                 </Link>
             </div>
         );
@@ -37,7 +40,10 @@ export default function Home() {
     return (
         <main className='home'>
             <nav>
-                <Image src={'/logo.png'} alt='logo' width={1464} height={180}></Image>
+                <div>
+                    <Image src={'/logo.png'} alt='logo' width={1464} height={180}></Image>
+                    <h1>Next Generation Global Trade Ecosystem</h1>
+                </div>
                 {navButton}
             </nav>
             <div>
