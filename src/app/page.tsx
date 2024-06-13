@@ -15,9 +15,14 @@ export default function Home() {
     const navButton = useMemo(() => {
         if (!account)
             return (
-                <button id='green-button' onClick={() => connect(PetraWalletName)}>
-                    Connect Wallet
-                </button>
+                <div className='button'>
+                    <button id='green-button' onClick={() => connect(PetraWalletName)}>
+                        Connect Wallet
+                    </button>
+                    <Link id='green-button' href={'/company-form'}>
+                        For Company
+                    </Link>
+                </div>
             );
 
         const isOwner = account.address.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string);
