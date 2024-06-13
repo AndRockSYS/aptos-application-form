@@ -29,10 +29,10 @@ export default function Home() {
                     {isOwner ? 'Owner Pad' : 'My Application'}
                 </Link>
                 <Link id='green-button' href={'/company-form'}>
-                    For Company
+                    Company Sign Up
                 </Link>
                 <Link id='green-button' href={'/member-form'}>
-                    For Member
+                    Member Sign Up
                 </Link>
                 <button
                     id='green-button'
