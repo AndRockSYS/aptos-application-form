@@ -13,9 +13,6 @@ const useAptos = () => {
     const [approved, setApproved] = useState<AptosApplication[]>([]);
 
     const requestApplications = async (method: string): Promise<AptosApplication[]> => {
-        if (!account || !account.address.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string))
-            return [];
-
         const aptosConfig = new AptosConfig({ network: Network.DEVNET });
         const aptos = new Aptos(aptosConfig);
 
