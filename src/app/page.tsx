@@ -12,52 +12,51 @@ import './home.css';
 export default function Home() {
     const { account, connect } = useWallet();
 
-    const navButton = useMemo(() => {
-        if (!account)
-            return (
-                <div className='button'>
-                    <button
-                        id='green-button'
-                        onClick={() => {
-                            if (!account) {
-                                if ('aptos' in window) connect(PetraWalletName);
-                                else window.open('https://petra.app/', `_blank`);
-                            }
-                        }}
-                    >
-                        Connect Passport
-                    </button>
-                    <Link id='green-button' href={'/company-form'}>
-                        Company Sign Up
-                    </Link>
-                </div>
-            );
+    const walletButton = useMemo(
+        () =>
+            account
+                ? account.address.slice(0, 4) + '...' + account.address.slice(62, 66)
+                : 'Connect Passport',
+        [account]
+    );
 
-        const isOwner = account.address.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string);
+    const navButtons = useMemo(() => {
+        const isOwner = account?.address.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string);
 
         return (
-            <div className='button'>
+            <>
                 <Link id='green-button' href={isOwner ? '/owner-pad' : '/my-application'}>
                     {isOwner ? 'Owner Pad' : 'My Application'}
                 </Link>
                 <Link id='green-button' href={'/company-form'}>
-                    Company Sign Up
+                    For Company
                 </Link>
                 <Link id='green-button' href={'/member-form'}>
-                    Member Sign Up
+                    For Member
                 </Link>
-            </div>
+                <button
+                    id='green-button'
+                    onClick={() => {
+                        if (!account) {
+                            if ('aptos' in window) connect(PetraWalletName);
+                            else window.open('https://petra.app/', `_blank`);
+                        }
+                    }}
+                >
+                    {walletButton}
+                </button>
+            </>
         );
     }, [account]);
 
     return (
         <main className='home'>
             <nav>
-                <div>
+                <div className='logo'>
                     <Image src={'/logo.png'} alt='logo' width={1464} height={180}></Image>
                     <h1>Next Generation Global Trade Ecosystem</h1>
                 </div>
-                {navButton}
+                {navButtons}
             </nav>
             <div>
                 <Image src={'/company-picture.png'} alt='company' width={448} height={508}></Image>
