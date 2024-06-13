@@ -127,7 +127,7 @@ span#red {
 #green-button {
     padding: 1rem 3rem;
 
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: white;
 
     background-color: var(--green);
@@ -138,7 +138,7 @@ span#red {
 #red-button {
     padding: 1rem 3rem;
 
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: white;
 
     background-color: var(--error);

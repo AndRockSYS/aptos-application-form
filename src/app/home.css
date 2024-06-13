@@ -11,6 +11,10 @@ main.home > nav {
     align-items: center;
     justify-items: center;
 
+    > #green-button {
+        font-size: 0.85rem;
+    }
+
     > div.logo {
         grid-column: 1/5;
 
