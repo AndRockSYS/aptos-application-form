@@ -25,7 +25,7 @@ export default function Home() {
                             }
                         }}
                     >
-                        Connect Wallet
+                        Connect Passport
                     </button>
                     <Link id='green-button' href={'/company-form'}>
                         For Company
