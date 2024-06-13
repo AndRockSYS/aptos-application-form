@@ -23,26 +23,7 @@ export default function OwnerPad() {
 
     const [isApproved, setIsApproved] = useState(false);
     const [applicant, setApplicant] = useState('');
-    const [currForm, setCurrForm] = useState<ApplicationForm>({
-        firstName: 'Null',
-        lastName: 'Null',
-        signature: '',
-        email: 'Null',
-        phone: 'Null',
-        company: {
-            logo: '',
-            name: 'Null',
-            registrationNumber: 'Null',
-            country: 'Null',
-            type: 0,
-        },
-        address: {
-            street: 'Null',
-            city: 'Null',
-            state: 'Null',
-            postalCode: 'Null',
-        },
-    });
+    const [currForm, setCurrForm] = useState<ApplicationForm | undefined>();
 
     const openForm = async (applicant: string, isApproved: boolean) => {
         const firebase = new Firebase();
@@ -67,9 +48,16 @@ export default function OwnerPad() {
         form.style.display = 'block';
     };
 
-    const getList = (array: AptosApplication[], isApproved: boolean) =>
-        array.map((application) => (
+    const getList = (array: AptosApplication[], isApproved: boolean) => {
+        if (
+            !account ||
+            !account?.address?.includes(process.env.NEXT_PUBLIC_MODULE_ADDRESS as string)
+        )
+            return;
+
+        return array.map((application) => (
             <div
+                id='white-button'
                 key={application.applicant}
                 className='application'
                 onClick={() => {
@@ -83,7 +71,7 @@ export default function OwnerPad() {
                 </h2>
             </div>
         ));
-
+    };
     return (
         <section className='owner-pad'>
             <h1>Approved Applications</h1>
@@ -92,7 +80,6 @@ export default function OwnerPad() {
             {useMemo(() => getList(applications, false), [account, applications])}
             <button
                 id='green-button'
-                type='button'
                 onClick={() => {
                     if (!account) {
                         'aptos' in window
