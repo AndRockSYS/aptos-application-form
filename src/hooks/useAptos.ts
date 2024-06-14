@@ -13,7 +13,7 @@ const useAptos = () => {
     const [approved, setApproved] = useState<AptosApplication[]>([]);
 
     const requestApplications = async (method: string): Promise<AptosApplication[]> => {
-        const aptosConfig = new AptosConfig({ network: Network.MAINNET });
+        const aptosConfig = new AptosConfig({ network: Network.DEVNET });
         const aptos = new Aptos(aptosConfig);
 
         const [addresses, hashes] = await aptos.view<[string[], string[]]>({
@@ -52,7 +52,7 @@ const useAptos = () => {
     };
 
     const isMemberInvited = async (company: string, member: string): Promise<boolean> => {
-        const aptosConfig = new AptosConfig({ network: Network.MAINNET });
+        const aptosConfig = new AptosConfig({ network: Network.DEVNET });
         const aptos = new Aptos(aptosConfig);
 
         const data = await aptos.view<boolean[]>({
