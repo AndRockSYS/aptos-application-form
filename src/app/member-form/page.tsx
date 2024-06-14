@@ -60,21 +60,17 @@ export default function Home() {
 
         const firebase = new Firebase();
 
-        isMemberInvited(inputs[0].value, account.address).then(async (isInvited) => {
+        isMemberInvited(inputs[3].value, account.address).then(async (isInvited) => {
             if (!isInvited) {
                 alert('You was not invited!');
                 return;
             }
 
             await firebase
-                .addMember(inputs[0].value, account.address, {
-                    address: inputs[1].value,
-                    address2: inputs[2].value,
-                    city: inputs[3].value,
-                    state: inputs[4].value,
-                    name: inputs[5].value,
-                    surname: inputs[6].value,
-                    position: inputs[7].value,
+                .addMember(inputs[3].value, account.address, {
+                    name: inputs[0].value,
+                    surname: inputs[2].value,
+                    position: inputs[3].value,
                 })
                 .catch((error) => {
                     alert(`Error - ${error}`);
@@ -109,17 +105,16 @@ export default function Home() {
                     </h3>
                 </section>
 
+                <div className='person'>
+                    <h2>Company Member {r}</h2>
+                    {getInput('person', 'first-name', 'First Name')}
+                    {getInput('person', 'last-name', 'Last Name')}
+                    {getInput('person', 'position', 'Your Position')}
+                    {requiredField}
+                </div>
                 <div className='company'>
                     <h2>Company Info {r}</h2>
                     {getInput('company', 'company-address', 'Company Aptos Address')}
-                    {requiredField}
-                </div>
-                <div className='address'>
-                    <h2>Personal Address {r}</h2>
-                    {getInput('address', 'street-address', 'Street Address')}
-                    {getInput('address', 'street-address-2', 'Street Address Line 2')}
-                    {getInput('address', 'city', 'City')}
-                    {getInput('address', 'state', 'State / Province')}
                     {requiredField}
                 </div>
                 <article>
@@ -156,13 +151,7 @@ export default function Home() {
                         registered Sovereign State. This will incur an administrative charge.
                     </p>
                 </article>
-                <div className='person'>
-                    <h2>Authorised Personnel on behalf of the Company {r}</h2>
-                    {getInput('person', 'first-name', 'First Name')}
-                    {getInput('person', 'last-name', 'Last Name')}
-                    {getInput('person', 'position', 'Your Position')}
-                    {requiredField}
-                </div>
+
                 <button
                     id='green-button'
                     type='button'

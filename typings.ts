@@ -38,9 +38,4 @@ export interface Member {
     name: string;
     surname: string;
     position: string;
-
-    address: string;
-    address2?: string;
-    city: string;
-    state: string;
 }
