@@ -30,8 +30,6 @@ const useData = () => {
 
         const imageInput = inputs[4].files?.item(0);
 
-        console.log(imageInput?.size);
-
         if (imageInput && imageInput.size > 5000) {
             alert('The logo is too big, max is 5kB');
             return undefined;
@@ -93,9 +91,9 @@ const useData = () => {
             },
         };
 
-        await signAndSubmitTransaction(transaction).catch((error) =>
-            alert(`Error occured - ${error}`)
-        );
+        await signAndSubmitTransaction(transaction)
+            .then(() => alert('Form was successfully submitted'))
+            .catch((error) => alert(`Error occured - ${error}`));
     };
 
     const hashData = async (form: ApplicationForm): Promise<string[]> => {

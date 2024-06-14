@@ -170,7 +170,10 @@ export default function Home() {
                     onClick={() => {
                         if (!account) {
                             if ('aptos' in window) connect(PetraWalletName);
-                            else window.open('https://petra.app/', `_blank`);
+                            else {
+                                alert('You need to install Petra Wallet to continue');
+                                window.open('https://petra.app/', `_blank`);
+                            }
                             return;
                         } else if (isFulfilled() && sigCanvas) sendForm(sigCanvas.toDataURL());
                     }}
