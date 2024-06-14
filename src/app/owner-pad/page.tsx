@@ -27,6 +27,7 @@ export default function OwnerPad() {
 
     const openForm = async (applicant: string, isApproved: boolean) => {
         const firebase = new Firebase();
+        await firebase.initialize();
 
         const privateKey = await firebase.getApplicant(applicant);
 

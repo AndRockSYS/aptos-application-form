@@ -1,5 +1,7 @@
-import { initializeApp } from 'firebase/app';
+import { FirebaseApp, initializeApp } from 'firebase/app';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { child, get, getDatabase, ref, remove, update } from 'firebase/database';
+
 import { Member } from 'typings';
 
 const firebaseConfig = {
@@ -14,8 +16,20 @@ const firebaseConfig = {
 };
 
 export default class KeyStore {
-    private app = initializeApp(firebaseConfig);
+    private app: FirebaseApp = initializeApp(firebaseConfig);
     private db = getDatabase(this.app);
+
+    async initialize() {
+        const auth = getAuth();
+        await createUserWithEmailAndPassword(
+            auth,
+            'tbp.world.aptos@gmail.com',
+            'tbp-world-aptos'
+        ).catch((error) => console.log(error));
+
+        this.app = auth.app;
+        this.db = getDatabase(this.app);
+    }
 
     async getApplicant(applicant: string): Promise<string> {
         const snapshot = await get(child(ref(this.db), `applicant/${applicant}`));

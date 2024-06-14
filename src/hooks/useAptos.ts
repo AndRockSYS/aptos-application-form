@@ -82,6 +82,7 @@ const useAptos = () => {
 
         if (!isApproved) {
             const firebase = new Firebase();
+            await firebase.initialize();
             firebase.deleteApplicant(applicant);
         }
     };

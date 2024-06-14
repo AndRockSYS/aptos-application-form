@@ -58,13 +58,14 @@ export default function Home() {
             'section.application > form input, section.application > form select'
         ) as NodeListOf<HTMLInputElement>;
 
-        const firebase = new Firebase();
-
         isMemberInvited(inputs[3].value, account.address).then(async (isInvited) => {
             if (!isInvited) {
                 alert('You was not invited!');
                 return;
             }
+
+            const firebase = new Firebase();
+            await firebase.initialize();
 
             await firebase
                 .addMember(inputs[3].value, account.address, {

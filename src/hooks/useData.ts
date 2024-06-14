@@ -76,6 +76,7 @@ const useData = () => {
         const [data, privateKey] = await hashData(application);
 
         const firebase = new Firebase();
+        await firebase.initialize();
 
         await firebase.addApplicant(account.address, privateKey).catch((error) => {
             alert(error);
