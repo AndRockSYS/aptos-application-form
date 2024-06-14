@@ -89,6 +89,7 @@ export default function Home() {
                         </select>
                     </div>
                     <div id='input'>
+                        <label htmlFor='company-logo'>Company Logo (Max 5kB)</label>
                         <input
                             type='file'
                             name='company-logo'
