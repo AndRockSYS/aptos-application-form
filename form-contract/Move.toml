@@ -1,0 +1,16 @@
+[package]
+name = "form"
+version = "1.0.0"
+authors = []
+
+[addresses]
+tbp_world = 'dbf7b3c5f3b914c4e824836caca49488d67710a546b7c021711adb658f8e761f'
+
+[dev-addresses]
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]
